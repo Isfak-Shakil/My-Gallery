@@ -1,8 +1,10 @@
-package com.example.mygallery;
+package com.example.mygallery.View.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.mygallery.R;
 
 public class MainActivity extends AppCompatActivity {
 
