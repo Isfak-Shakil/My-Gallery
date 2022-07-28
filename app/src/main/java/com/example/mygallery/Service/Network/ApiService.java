@@ -16,7 +16,7 @@ import static com.example.mygallery.Service.Network.RetrofitInstance.API_KEY;
   public interface ApiService {
     @Headers("Authorization: Client-ID "+API_KEY)
     @GET("/photos")
-    Call<List<ImageModel>> getImages(@Query("page")int page,@Query("per_page")int parPage);
+    Call<List<ImageModel>> getImages(@Query("page")int page,@Query("per_page")int per_Page);
 
     @Headers("Authorization: Client-ID "+API_KEY)
     @GET("/search/photos")

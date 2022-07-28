@@ -30,17 +30,14 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-
    private GridLayoutManager layoutManager;
    private ArrayList<ImageModel> list;
-
     private ImageAdapter imageAdapter;
-
+    private ProgressDialog progressDialog;
     private  int page=1;
-   private ProgressDialog progressDialog;
-   private int pageSize=60;
-   private boolean isLoading;
-   private boolean isLastPage;
+    private  int pageSize=30;
+    private boolean isLoading;
+    private boolean isLastPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(imageAdapter);
 
+
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        getData();
 
+        getData();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -77,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 int totalItem=layoutManager.getItemCount();
                 int firstVisibleItemPosition=layoutManager.findFirstVisibleItemPosition();
                 if (!isLoading && !isLastPage){
-                    if ((visibleItem+firstVisibleItemPosition >=totalItem) &&firstVisibleItemPosition >=0
-                        && totalItem >=pageSize)
-                    {
+                    if ((visibleItem +firstVisibleItemPosition >=totalItem)
+                            && firstVisibleItemPosition >= 0
+                            && totalItem >=pageSize){
                         page++;
                         getData();
                     }
@@ -100,11 +98,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 isLoading=false;
                 progressDialog.dismiss();
-                if (list.size()>0){
+                if (list.size() > 0){
                     isLastPage=list.size()<pageSize;
-                }else {
-                    isLastPage=true;
-                }
+                }else isLastPage=true;
+
             }
 
             @Override
@@ -114,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.option_menu,menu);
