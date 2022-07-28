@@ -22,6 +22,8 @@
         />
     <RelativeLayout
         android:layout_below="@+id/myZoomageViewId"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="400dp"
         android:layout_centerInParent="true"
         android:layout_height="wrap_content">

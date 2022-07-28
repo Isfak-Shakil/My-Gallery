@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class FullImageActivity extends AppCompatActivity {
 
     private static final int CODE=1;
 
+ Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +52,22 @@ public class FullImageActivity extends AppCompatActivity {
         shareBtn=findViewById(R.id.sharetnId);
         imageView=findViewById(R.id.myZoomageViewId);
 
+        intent=new Intent();
+
+
 
         //receive image by intent
         Glide.with(this)
                 .load(getIntent().getStringExtra("image"))
                 .into(imageView);
 
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               shareImage();
+            }
+        });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +84,6 @@ public class FullImageActivity extends AppCompatActivity {
         });
 
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode==CODE){
@@ -111,5 +122,29 @@ public class FullImageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    private void shareImage() {
+        StrictMode.VmPolicy.Builder builder=new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        File file=new File(getExternalCacheDir()+"/"+getResources().getString(R.string.app_name)+".jpg");
+
+        try {
+            FileOutputStream fileOutputStream=new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+           intent=new Intent(Intent.ACTION_SEND);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            startActivity(Intent.createChooser(intent,"Share Image"));
     }
 }
