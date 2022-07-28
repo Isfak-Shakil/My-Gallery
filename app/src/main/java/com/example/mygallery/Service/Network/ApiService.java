@@ -14,11 +14,11 @@ import retrofit2.http.Query;
 import static com.example.mygallery.Service.Network.RetrofitInstance.API_KEY;
 
   public interface ApiService {
-    @Headers("Authorization: Client-ID="+API_KEY)
+    @Headers("Authorization: Client-ID "+API_KEY)
     @GET("/photos")
     Call<List<ImageModel>> getImages(@Query("page")int page,@Query("per_page")int parPage);
 
-    @Headers("Authorization: Client-ID="+API_KEY)
+    @Headers("Authorization: Client-ID "+API_KEY)
     @GET("/search/photos")
     Call<SearchModel> searchImages(@Query("query")String query);
 }
